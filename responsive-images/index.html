@@ -66,20 +66,20 @@
                         let img = document.createElement("img");
                         img.src = window.URL.createObjectURL(file);
                         img.onload = function() {
-                            let newWidth = img.width / 2;
-                            let newHeight = img.height / 2;
+                            let newWidth = img.naturalWidth / 2;
+                            let newHeight = img.naturalHeight / 2;
 
                             let myCanvas = document.createElement("canvas");
                             myCanvas.width = newWidth;
                             myCanvas.height = newHeight;
                             let ctx = myCanvas.getContext("2d");
-                            ctx.drawImage(img, 0, 0, newWidth, newHeight);
+                            ctx.drawImage(img, newWidth/2*-1, newHeight/2*-1, newWidth, newHeight);
                             console.log(ctx);
 
                             let dataurl = myCanvas.toDataURL(filetype);
                             let img2 = document.createElement("img");
                             img2.src = dataurl;
-                            $("#main").append(myCanvas);
+                            $("#main").append(img2);
                         };
                     }
                 }
