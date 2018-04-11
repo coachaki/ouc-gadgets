@@ -51,7 +51,6 @@
                         if (gadget) {
                             let params = {
                                 site: gadget.site,
-                                path: '/zz-test/images',
                                 overwrite: true,
                                 authorization_token: gadget.token
                             }
@@ -59,7 +58,7 @@
 
                             for(let i = 0; i < output.length; i++) {
                                 params.data = output[i].split(',')[1];
-                                params.path = params.path + '/image' + i + '.jpg';
+                                params.path = '/zz-test/images/image' + i + '.jpg';
                                 
                                 $.ajax({
                                     method: 'post',
