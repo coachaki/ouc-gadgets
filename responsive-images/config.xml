@@ -35,7 +35,7 @@
          You can add as many custom entries as you wish. The "private" and "overwritable" flags
          apply to custom entries too. -->
     <entry key="font_size" label="Font Size" overwritable="true">14px</entry>
-    <entry key="version" label="Version">1.0</entry>
+    <entry key="version" label="Version" overwritable="false">1.0</entry>
 
 </config>
 
