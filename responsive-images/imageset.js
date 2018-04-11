@@ -36,6 +36,7 @@ function preview(output) {
 	for(let i = 0; i < output.length; i++) {
 		let img = document.createElement('img');
 		img.src = output[i];
+		console.log(output[i].split(',')[1]);
 		console.log(img);
 		$('#main').append(img);
 	}
