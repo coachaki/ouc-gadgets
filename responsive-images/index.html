@@ -56,7 +56,7 @@
                     console.log('Notification received:', notification);
                 }
             });
-            
+
             $("#images").change(function(e){
                 let files = this.files;
                 for(let i = 0; i < files.length; i++) {
@@ -77,11 +77,12 @@
 
                         let site = gadget.site;
                         let path = "/zz-test/images";
+                        let url = gadget.apihost + '/files/image_save';
 
                         for(let i = 0; i < output.length; i++) {
                             $.ajax({
                                 method: 'post',
-                                url: '/files/image_save',
+                                url: url,
                                 data: {
                                     site: site,
                                     path: path + '/image' + i,
