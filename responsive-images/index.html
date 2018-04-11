@@ -56,9 +56,7 @@
                     console.log('Notification received:', notification);
                 }
             });
-        });
-
-        $(document).ready(function() {
+            
             $("#images").change(function(e){
                 let files = this.files;
                 for(let i = 0; i < files.length; i++) {
@@ -76,6 +74,26 @@
                         let output = resize(this, 'image/jpeg', newSizes);
                         console.log(output);
                         preview(output);
+
+                        let site = gadget.site;
+                        let path = "/zz-test/images";
+
+                        for(let i = 0; i < output.length; i++) {
+                            $.ajax({
+                                method: 'post',
+                                url: '/files/image_save',
+                                data: {
+                                    site: site,
+                                    path: path + '/image' + i,
+                                    overwrite: true,
+                                    data: output[i]
+                                }
+                            })
+                            .done(function(response){
+                                console.log('done',response);
+                            });
+
+                        }
                     }
                 }
             });
