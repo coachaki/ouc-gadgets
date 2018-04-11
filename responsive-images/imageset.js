@@ -11,21 +11,21 @@ let ImageSet = new function() {
 function resize(source, filetype, newSizes) {
 	let output = [];
 	let canvas = document.createElement('canvas');
-	let maxWidth = source.naturalWidth;
-	let maxHeight = source.naturalHeight;
+	let sourceWidth = source.naturalWidth;
+	let sourceHeight = source.naturalHeight;
 	for(let i = 0; i < newSizes.length; i++) {
-		if (newSize.width > maxWidth || newSize.height > maxHeight) {
-			continue;
-		}
 		let newSize = newSizes[i];
+		if (newSize.width > sourceWidth || newSize.height > sourceHeight) {
+			continue; // only resize down. don't resize up
+		}
 		canvas.width = newSize.width;
 		canvas.height = newSize.height;
 
-		let widthRatio = newSize.width 
+		let ratio = Math.max(newSize.width / sourceWidth, newSize.height / sourceHeight);
 
 		let context = canvas.getContext('2d');
 
-		context.drawImage(source, 0, 0, newSize.width, newSize.height);
+		context.drawImage(source, 0, 0, sourceWidth*ratio, sourceHeight*ratio);
 		output.push(canvas.toDataURL(filetype));
 	}
 	return output;
