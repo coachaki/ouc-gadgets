@@ -87,7 +87,8 @@
                                     site: site,
                                     path: path + '/image' + i,
                                     overwrite: true,
-                                    data: output[i]
+                                    data: output[i],
+                                    authorization_token: gadget.token
                                 }
                             })
                             .done(function(response){
