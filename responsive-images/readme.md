@@ -10,6 +10,8 @@ This gadget will generate multiple, different size images from 1 user input imag
     + options
         * crop
         * crop center
+        * output filetype (jpg/png/same as input)
+    + trigger ready event
 - Functions
     + preview
     + push to OU
