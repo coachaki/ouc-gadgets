@@ -29,6 +29,8 @@
             <input type="button" name="list" value="List Files" disabled/>
             <input type="button" name="delete" value="Delete Files" disabled/>
         </form>
+        <div id="file-list">
+        </div>
     </div>
     <script type="text/javascript">
         $(document).ready(function () {
@@ -36,7 +38,18 @@
 
             $('input[name="list"]').on('click', function(e) {
                 let path = $(this).closest('form').find('input[name="path"]')[0].value;
-                getFiles(path);
+                let allFiles = [];
+                $.(getFiles(path)).then(function(files){
+                    allFiles = files;
+
+                    let html = '<ul>';
+                    allFiles.forEach(function(file){
+                        html += '<li>' + file + '</li>';
+                    });
+                    html += '</ul>';
+
+                    $('#file-list').html(html);
+                });
             })
             $('input[name="delete"]').on('click', function(e) {
                 deleteFiles(e);
