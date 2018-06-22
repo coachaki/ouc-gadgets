@@ -82,7 +82,7 @@
                     console.log('before', dirs.length);
                     new_dirs = [];
                     let dirs_count = 0;
-                    let promises = [];
+                    let defs = [];
                     for (let i = 0; i < dirs.length; i++) {
                         let dir = dirs[i];
                         let params = {
@@ -91,7 +91,8 @@
                             path: dir
                         }
                         let url = gadget.apihost + '/files/list';
-                        let promise = $.Deferred();
+                        let def = $.Deferred();
+                        defs.push(def);
                         $.ajax({
                             method: 'get',
                             url: url,
@@ -105,13 +106,11 @@
                                     files.push(entry.staging_path);
                                 }
                             });
-
-                            promise.resolve();
+                            console.log('dir ajax');
+                            def.resolve();
                         });
-
-                        promises.push(promise);
                     }
-                    $.when(promises).done(function(){
+                    $.when(defs).done(function(){
                         dirs = new_dirs;
                         console.log('inside when', new_dirs, dirs, new_dirs.length, dirs.length);
                     });
