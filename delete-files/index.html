@@ -82,15 +82,16 @@
                     console.log('before', dirs.length);
                     new_dirs = [];
                     let dirs_count = 0;
-                    dirs.forEach(function(dir){
-                        dirs_count++;
+                    let promises = [];
+                    for (let i = 0; i < dirs.length; i++) {
+                        let dir = dirs[i];
                         let params = {
                             site: gadget.site,
                             authorization_token: gadget.token,
                             path: dir
                         }
                         let url = gadget.apihost + '/files/list';
-                        $.ajax({
+                        let promise = $.ajax({
                             method: 'get',
                             url: url,
                             data: params
@@ -104,9 +105,13 @@
                                 }
                             });
                         });
+
+                        promises.push(promise);
+                    }
+                    $.when(promises).done(function(){
+                        dirs = new_dirs;
                     });
                     console.log('dirs count', dirs_count);
-                    dirs = new_dirs;
                     console.log('new_dirs', new_dirs);
                     console.log('dirs', dirs);
                     console.log('after', new_dirs.length);
