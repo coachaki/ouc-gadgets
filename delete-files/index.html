@@ -91,7 +91,8 @@
                             path: dir
                         }
                         let url = gadget.apihost + '/files/list';
-                        let promise = $.ajax({
+                        let promise = $.Deferred();
+                        $.ajax({
                             method: 'get',
                             url: url,
                             data: params
@@ -104,6 +105,8 @@
                                     files.push(entry.staging_path);
                                 }
                             });
+
+                            promise.resolve();
                         });
 
                         promises.push(promise);
