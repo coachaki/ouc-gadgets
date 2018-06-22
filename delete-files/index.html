@@ -39,7 +39,7 @@
             $('input[name="list"]').on('click', function(e) {
                 let path = $(this).closest('form').find('input[name="path"]')[0].value;
                 let allFiles = [];
-                $.(getFiles(path)).then(function(files){
+                $.when(getFiles(path)).then(function(files){
                     allFiles = files;
 
                     let html = '<ul>';
