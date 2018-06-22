@@ -74,6 +74,7 @@
             if (gadget) {
                 let params = {
                     site: gadget.site,
+                    authorization_token: gadget.token,
                     path: path
                 }
                 let url = gadget.apihost + '/files/list';
