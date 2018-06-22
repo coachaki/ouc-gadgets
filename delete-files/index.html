@@ -110,12 +110,9 @@
                     }
                     $.when(promises).done(function(){
                         dirs = new_dirs;
+                        console.log('inside when', new_dirs, dirs, new_dirs.length, dirs.length);
                     });
-                    console.log('dirs count', dirs_count);
-                    console.log('new_dirs', new_dirs);
-                    console.log('dirs', dirs);
-                    console.log('after', new_dirs.length);
-                    console.log('after', dirs.length);
+                    console.log('outside when', new_dirs, dirs, new_dirs.length, dirs.length);
                 }
                 console.log('while count', while_count);
                 console.log('files', files);
