@@ -76,8 +76,8 @@
             let while_count = 0;
 
             if (gadget) {
-                while (dirs.length > 0 && count < 10) { // infinite loop catch, max: 10 iterations
-                    while_count++
+                while (dirs.length > 0 && while_count < 10) { // infinite loop catch, max: 10 iterations
+                    while_count++;
                     console.log('before', dirs.length);
                     let new_dirs = [];
                     let dirs_count = 0;
