@@ -73,14 +73,16 @@
         function getFiles(path) {
             let files = [];
             let dirs = [path];
-            let count = 0;
+            let while_count = 0;
 
             if (gadget) {
                 while (dirs.length > 0 && count < 10) { // infinite loop catch, max: 10 iterations
-                    count++
+                    while_count++
                     console.log('before', dirs.length);
                     let new_dirs = [];
+                    let dirs_count = 0;
                     dirs.forEach(function(dir){
+                        dirs_count++;
                         let params = {
                             site: gadget.site,
                             authorization_token: gadget.token,
@@ -100,14 +102,15 @@
                                     files.push(entry.staging_path);
                                 }
                             });
-
-                        });   
+                        });
                     });
+                    console.log('dirs count', dirs_count);
                     dirs = new_dirs;
                     console.log('new_dirs', new_dirs);
                     console.log('dirs', dirs);
                     console.log('after', dirs.length);
                 }
+                console.log('while count', while_count);
                 console.log('files', files);
             }
         }
