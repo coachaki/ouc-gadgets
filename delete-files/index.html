@@ -26,7 +26,7 @@
     <div id="main">
         <form id="file-form">
             <input name="path" id="path" type="text" style="width:100%"/>
-            <input type="button" name="list" value="List Files" disabled/>
+            <input type="submit" name="list" value="List Files" disabled/>
             <input type="button" name="delete" value="Delete Files" disabled/>
         </form>
     </div>
@@ -34,7 +34,8 @@
         $(document).ready(function () {
             $('input[disabled]').prop('disabled', false);
 
-            $('input[name="list"]').on('click', function(e) {
+            $('input[name="list"]').on('submit', function(e) {
+                e.preventDefault();
                 let path = $(this).closest('form').find('input[name="path"]')[0].value;
                 getFiles(path);
             })
@@ -77,11 +78,11 @@
             if (gadget) {
                 while (dirs.length > 0) {
                     let new_dirs = [];
-                    dirs.forEach(function(path){
+                    dirs.forEach(function(dir){
                         let params = {
                             site: gadget.site,
                             authorization_token: gadget.token,
-                            path: path
+                            path: dir
                         }
                         let url = gadget.apihost + '/files/list';
                         $.ajax({
