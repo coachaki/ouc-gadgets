@@ -110,7 +110,7 @@
                             def.resolve();
                         });
                     }
-                    $.when(defs).done(function(){
+                    $.when().apply($, defs).then(function(){
                         dirs = new_dirs;
                         console.log('inside when', new_dirs, dirs, new_dirs.length, dirs.length);
                     });
