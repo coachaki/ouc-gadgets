@@ -70,55 +70,45 @@
             });
         });
 
-        function getFiles(path) {
-            let files = [];
-            let dirs = [path];
-            let new_dirs = [];
-            let while_count = 0;
+        function getFiles(dir) {
+            let def = $.Deferred();
+            let allFiles = [];
 
-            if (gadget) {
-                while (dirs.length > 0 && while_count < 10) { // infinite loop catch, max: 10 iterations
-                    while_count++;
-                    console.log('before', dirs.length);
-                    new_dirs = [];
-                    let dirs_count = 0;
-                    let defs = [];
-                    for (let i = 0; i < dirs.length; i++) {
-                        let dir = dirs[i];
-                        let params = {
-                            site: gadget.site,
-                            authorization_token: gadget.token,
-                            path: dir
-                        }
-                        let url = gadget.apihost + '/files/list';
-                        let def = $.Deferred();
-                        defs.push(def);
-                        $.ajax({
-                            method: 'get',
-                            url: url,
-                            data: params
-                        })
-                        .done(function(response){
-                            response.entries.forEach(function(entry) {
-                                if (entry.is_directory) {
-                                    new_dirs.push(entry.staging_path);
-                                } else {
-                                    files.push(entry.staging_path);
-                                }
-                            });
-                            console.log('dir ajax');
-                            def.resolve();
-                        });
-                    }
-                    $.when.apply($, defs).then(function(){
-                        dirs = new_dirs;
-                        console.log('inside when', new_dirs, dirs, new_dirs.length, dirs.length);
-                    });
-                    console.log('outside when', new_dirs, dirs, new_dirs.length, dirs.length);
-                }
-                console.log('while count', while_count);
-                console.log('files', files);
+            let params = {
+                site: gadget.site,
+                authorization_token: gadget.token,
+                path: dir
             }
+            let url = gadget.apihost + '/files/list';
+
+            $.ajax({
+                method: 'get',
+                url: url,
+                data: params
+            })
+            .done(function(response){
+                // console.log('ls ' + dir, response.entries);
+                let defs = [];
+
+                response.entries.forEach(function(entry) {
+                    if (entry.is_directory) {
+                        defs.push(getFiles(entry.staging_path));
+                    } else {
+                        allFiles.push(entry.staging_path);
+                    }
+                });
+
+                $.when.apply($, defs).then(function() {
+                    for (let i = 0; i < arguments.length; i++) {
+                        allFiles = allFiles.concat(arguments[i]);
+                        // console.log('loop ' + i, allFiles);
+                    }
+                    def.resolve(allFiles);
+                });
+            });
+
+            // console.log('running ls on ' + dir);
+            return def.promise();
         }
 
         function deleteFiles(event) {
