@@ -6,14 +6,14 @@
     <title>Delete Files</title> 
     
     <style type="text/css">
-        body {
-            margin: 10px;
-            background-color: transparent;
-        }
-    </style>
+    body {
+        margin: 10px;
+        background-color: transparent;
+    }
+</style>
 
-    <!-- jQuery IS REQUIRED for gadgetlib.js to work. -->
-    <script type="text/javascript" src="../lib/jquery-3.3.1.min.js"></script>
+<!-- jQuery IS REQUIRED for gadgetlib.js to work. -->
+<script type="text/javascript" src="../lib/jquery-3.3.1.min.js"></script>
 
     <!-- 
         gadgetlib.js is a library of basic functions that gadgets can use. It creates a global
@@ -71,22 +71,38 @@
         });
 
         function getFiles(path) {
-            if (gadget) {
-                let params = {
-                    site: gadget.site,
-                    authorization_token: gadget.token,
-                    path: path
-                }
-                let url = gadget.apihost + '/files/list';
+            let files = [];
+            let dirs = array(path);
 
-                $.ajax({
-                    method: 'get',
-                    url: url,
-                    data: params
-                })
-                .done(function(response){
-                    console.log('done',response);
-                });
+            if (gadget) {
+                while (dirs.length > 0) {
+                    let new_dirs = [];
+                    dirs.forEach(function(path){
+                        let params = {
+                            site: gadget.site,
+                            authorization_token: gadget.token,
+                            path: path
+                        }
+                        let url = gadget.apihost + '/files/list';
+                        $.ajax({
+                            method: 'get',
+                            url: url,
+                            data: params
+                        })
+                        .done(function(response){
+                            response.entries.forEach(function(entry) {
+                                if (entry.is_directory) {
+                                    new_dirs.push(entry.staging_path);
+                                } else {
+                                    files.push(entry.staging_path);
+                                }
+                            });
+
+                        });   
+                    });
+                    dirs = new_dirs;
+                }
+                console.log('files', files);
             }
         }
 
