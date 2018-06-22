@@ -73,9 +73,12 @@
         function getFiles(path) {
             let files = [];
             let dirs = [path];
+            let count = 0;
 
             if (gadget) {
-                while (dirs.length > 0) {
+                while (dirs.length > 0 && count < 10) { // infinite loop catch, max: 10 iterations
+                    count++
+                    console.log('before', dirs.length);
                     let new_dirs = [];
                     dirs.forEach(function(dir){
                         let params = {
@@ -103,6 +106,7 @@
                     dirs = new_dirs;
                     console.log('new_dirs', new_dirs);
                     console.log('dirs', dirs);
+                    console.log('after', dirs.length);
                 }
                 console.log('files', files);
             }
