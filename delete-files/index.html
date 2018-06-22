@@ -73,13 +73,14 @@
         function getFiles(path) {
             let files = [];
             let dirs = [path];
+            let new_dirs = [];
             let while_count = 0;
 
             if (gadget) {
                 while (dirs.length > 0 && while_count < 10) { // infinite loop catch, max: 10 iterations
                     while_count++;
                     console.log('before', dirs.length);
-                    let new_dirs = [];
+                    new_dirs = [];
                     let dirs_count = 0;
                     dirs.forEach(function(dir){
                         dirs_count++;
