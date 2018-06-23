@@ -36,9 +36,9 @@
         $(document).ready(function () {
             $('input[disabled]').prop('disabled', false);
 
+            let allFiles = [];
             $('input[name="list"]').on('click', function(e) {
                 let path = $(this).closest('form').find('input[name="path"]')[0].value;
-                let allFiles = [];
                 $.when(getFiles(path)).then(function(files){
                     allFiles = files;
 
@@ -52,7 +52,7 @@
                 });
             })
             $('input[name="delete"]').on('click', function(e) {
-                deleteFiles(e);
+                console.log('delete', allFiles);
             });
 
             gadget.ready().then(gadget.fetch).then(function () {
