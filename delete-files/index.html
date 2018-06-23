@@ -37,6 +37,8 @@
             $('input[disabled]').prop('disabled', false);
 
             let allFiles = [];
+            let deletedFiles = [];
+            let failedFiles = [];
             $('input[name="list"]').on('click', function(e) {
                 let path = $(this).closest('form').find('input[name="path"]')[0].value;
                 $.when(getFiles(path)).then(function(files){
@@ -52,7 +54,7 @@
                 });
             })
             $('input[name="delete"]').on('click', function(e) {
-                console.log('delete', allFiles);
+                deleteFiles(allFiles);
             });
 
             gadget.ready().then(gadget.fetch).then(function () {
@@ -124,8 +126,24 @@
             return def.promise();
         }
 
-        function deleteFiles(event) {
-            console.log(event);
+        function deleteFiles(fileList) {
+            fileList.forEach(function(file) {
+                let params = {
+                    site: gadget.site,
+                    authorization_token: gadget.token,
+                    path: file
+                }
+                let url = gadget.apihost + '/files/delete';
+
+                $.ajax({
+                    method: 'post',
+                    url: url,
+                    data: params
+                })
+                .done(function(response){
+                    console.log(file, reponse);
+                });
+            });
         }
     </script>
 </body>
