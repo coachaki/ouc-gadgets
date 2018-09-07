@@ -2,13 +2,13 @@
 
 <config>
     <!-- The title that appears in the gadget's title bar. -->
-    <entry key="title" label="Title">Image Set</entry>
+    <entry key="title" label="Title">Delete Files</entry>
     
     <!-- The URL of an icon image. -->
     <entry key="icon" private="true">http://commons.omniupdate.com/favicon.ico</entry>
     
     <!-- The description that appears in the gadget chooser. -->
-    <entry key="description" private="true">This gadget will ideally generate multiple, different sized images from 1 image source.</entry>
+    <entry key="description" private="true">This gadget will delete all children and descendant files in the specified path.</entry>
     
     <!-- The URL of a thumbnail image to appear in the gadget chooser. -->
     <entry key="thumbnail" private="true">http://fakeimg.pl/96/</entry>
@@ -35,14 +35,6 @@
          You can add as many custom entries as you wish. The "private" and "overwritable" flags
          apply to custom entries too. -->
     <entry key="version" label="Version" private="true">1.0</entry>
-    <entry key="default_image_dir" label="Default Image Directory" overwritable="true">/_resources/images/</entry>
-    <entry key="default_image_sizes" label="Default Image Sizes" overwritable="true">
-      {
-        1: [width: 1200, height: 900],
-        2: [width: 800, height: 600],
-        3: [width: 400, height: 300]
-      }
-    </entry>
 
 </config>
 
