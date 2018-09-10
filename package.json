@@ -1,0 +1,22 @@
+{
+  "name": "ouc-gadgets",
+  "version": "1.0.0",
+  "description": "A repository housing some gadgets for OU Campus.",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/omijika/ouc-gadgets.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/omijika/ouc-gadgets/issues"
+  },
+  "homepage": "https://github.com/omijika/ouc-gadgets#readme"
+}

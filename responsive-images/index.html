@@ -22,16 +22,22 @@
     <header>
         <h1>Responsive Images</h1>
     </header>
-    <form>
-        <!-- full-screen overlay drag & drop function here -->
-        <input name="images" id="images" type="file" multiple style="width:500px;height:200px;" />
-    </form>
-    <main>
-        <section class="output-list"></section>
-    </main>
-    <aside class="preview-zone">
-
-    </aside>
+    <div class="container-fluid">
+        <div class="row">
+            <main class="main-ui col-sm-12 col-md-5 col-lg-4">
+                <form>
+                    <!-- full-screen overlay drag & drop function here -->
+                    <input name="images" id="images" type="file" multiple />
+                </form>
+                <section class="output-list">
+                    
+                </section>
+            </main>
+            <aside class="preview-zone d-none d-md-block col-md-7 col-lg-8">
+                <p>test</p>
+            </aside>
+        </div>
+    </div>
     <footer>
         <p>Akifumi Yamamoto</p>
     </footer>
