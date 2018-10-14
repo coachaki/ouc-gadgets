@@ -7,6 +7,25 @@ This gadget will generate multiple, different size images from 1 user input imag
 1. Use Lanczos algorithm for resizing the image
 2. Turn ImageSet into a class like function
 
+## Roadmap
+
+### Version 1.0 Feature List
+
+- An image is resized to multiple resolutions of the same aspect ratio.
+- No support for cropping
+- Simple UX
+- Resize algorithm to be good enough but not great. If possible, bicubic.
+
+### Version 2.0 Feature List
+
+- Crop support
+- Simple interface for choosing crop-point per aspect ratio
+
+### Version 3.0 Feature List
+
+- Custom crop-point for overriding aspect-ratio crop-point
+
+
 ## Implementation Details
 
 - ImageSet class
