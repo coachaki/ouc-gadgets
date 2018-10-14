@@ -13,11 +13,11 @@ html, body {
   height: 100%; }
 
 aside {
-  width: 0;
-  height: 0;
+  display: none;
   background: rgba(0, 128, 128, 0.6); }
   @media screen and (min-width: 768px) {
     aside {
+      display: block;
       min-width: 250px;
       max-width: 400px;
       width: 40%;
@@ -34,8 +34,8 @@ section {
 
 main {
   width: 100%;
-  height: 100%;
-  background: teal; }
+  background: salmon;
+  padding: .8em; }
 
 .canvas-wrapper {
   width: 80%;
@@ -43,27 +43,21 @@ main {
   margin: auto;
   margin-top: 6em; }
 
-#input-form {
-  position: absolute;
-  margin-left: .5em;
-  margin-top: .5em;
-  width: 50%;
-  max-width: 350px;
-  opacity: .4; }
-  #input-form:hover {
-    opacity: 1; }
-  @media screen and (min-width: 768px) {
-    #input-form {
-      margin-left: 1.8em;
-      margin-top: 1.8em;
-      max-width: unset; } }
-  #input-form input[type=file] {
-    background: rgba(255, 255, 255, 0.667);
-    width: 100%;
-    padding: .3em; }
-    @media screen and (min-width: 768px) {
-      #input-form input[type=file] {
-        padding: .5em; } }
+@media screen and (min-width: 768px) {
+  #input-form {
+    position: absolute;
+    margin-left: 1.8em;
+    margin-top: 1.8em;
+    max-width: 480px;
+    opacity: .4; }
+    #input-form:hover {
+      opacity: 1; } }
+
+#input-form input[type=file] {
+  background: rgba(255, 255, 255, 0.667);
+  width: calc(100% - 1em);
+  padding: .5em;
+  border: 1px dashed #ccc; }
 
 #preview-frame {
   width: 100%;

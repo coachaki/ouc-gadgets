@@ -37,11 +37,11 @@
     <entry key="version" label="Version" private="true">1.0</entry>
     <entry key="default_image_dir" label="Default Image Directory" overwritable="true">/_resources/images/</entry>
     <entry key="default_image_sizes" label="Default Image Sizes" overwritable="true">
-      {
-        1: [width: 1200, height: 900],
-        2: [width: 800, height: 600],
-        3: [width: 400, height: 300]
-      }
+      [
+        {width: 1200, height: 900},
+        {width: 800, height: 600},
+        {width: 400, height: 300}
+      ]
     </entry>
 
 </config>

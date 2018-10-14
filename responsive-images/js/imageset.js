@@ -56,7 +56,7 @@ function clearPreview() {
     }
 }
 
-function simpleResize(imageData, )
+function simpleResize(imageData) {}
 
 function bicubicResize(imageData) {
 
