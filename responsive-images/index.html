@@ -39,6 +39,7 @@
                 <!-- full-screen overlay drag & drop function here -->
                 <input name="images" id="images" type="file" multiple />
             </form>
+            <div id="main"></div>
             <!-- <div class="canvas-wrapper">
                 <canvas id="preview-frame"></canvas>
             </div> -->
@@ -48,6 +49,7 @@
     <script type="text/javascript">
         var canvas_data;
         var gadget = gadget || false;
+        var test;
         $(document).ready(function () {
 
             $("#images").change(function (e) {
@@ -61,9 +63,11 @@
                     ];
                     let img = document.createElement('img');
                     img.src = window.URL.createObjectURL(file);
+                    test = img;
+                    console.log(test.complete);
                     img.onload = function () {
-                        console.log(newSizes);
-                        console.log(img);
+                        console.log([newSizes, img, this]);
+                        console.log(test.complete);
                         let output = resize(this, 'image/jpeg', newSizes);
                         console.log(output);
                         preview(output);

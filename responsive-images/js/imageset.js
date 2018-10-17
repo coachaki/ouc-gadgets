@@ -1,12 +1,23 @@
-// ImageSet should trigger a custom ready event
-let ImageSet = new function () {
-    this.source = {}; // HTMLImageElement? Yes. Send a "load" event on load.
-    this.output = {}; // array of resized images
-    this.newSizes = []; // array of width, height numbers
-    this.crop = true;
-    this.cropCenter = {}; // x, y coordinates
-}();
+'use strict';
 
+function ImageSet(source, widths) {
+    'use strict';
+    
+    if (!(source instanceof HTMLImageElement)) {
+        console.error('The source must be an HTMLImageElement.');
+    }
+    else if(!source.complete) {
+        console.error('Please call the ImageSet constructor after the image has been loaded.');
+        return;
+    }
+    this.output = {};
+    this.source = { image: source, width: source.naturalWidth, height: source.naturalHeight };
+    this.widths = widths.sort() || [1920, 1280, 800, 600, 480].sort();
+
+    this.resize = function() {
+        let canvas = document.createElement('canvas');
+    }
+}
 
 function resize(source, filetype, newSizes) {
     let output = [];
