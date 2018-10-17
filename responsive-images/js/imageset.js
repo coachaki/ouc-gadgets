@@ -5,13 +5,14 @@ function ImageSet(source, widths) {
     if (!(source instanceof HTMLImageElement)) {
         throw 'The source must be an HTMLImageElement.';
     }
-    else if(!source.compvare) {
+    else if(!source.complete) {
         throw 'Please call the ImageSet constructor after the image has been loaded.';
     }
 
-    this.output = {};
-    this.source = { image: source, width: source.naturalWidth, height: source.naturalHeight };
-    this.widths = widths.sort() || [1920, 1280, 800, 600, 480].sort();
+    this.output = {type: 'image/jpeg'};
+    this.source = {image: source, width: source.naturalWidth, height: source.naturalHeight};
+    this.widths = widths || [1920, 1280, 800, 600, 480];
+    this.widths.sort(function(a, b) { return b - a;}); // largest to smallest, so we can scale down efficiently
 
     this.resize = function() {
         simpleResize();
@@ -24,8 +25,30 @@ function ImageSet(source, widths) {
     };
 
     var simpleResize = function() {
+        console.log('simpleResize');
         var canvas = document.createElement('canvas');
+        var context = canvas.getContext('2d');
 
+        canvas.width = this.source.width;
+        canvas.height = this.source.height;
+        context.drawImage(source.image, 0, 0);
+
+        this.output.original = context.toDataURL;
+
+        var tempImage = new Image();
+        for (var i = 0; i < this.widths.length; i++) {
+            var width = this.widths[i];
+            if (width > this.source.width) {
+                this.output[width] = 'error';
+                continue; // only scale down
+            }
+
+            var scale = width / canvas.width;
+            var context = canvas.getContext('2d');
+
+            context.drawImage(imageStart, 0, 0);
+            this.output[width] = canvas.toDataURL(this.output.type)
+        }
     };
 
     // eslint-disable-next-line no-unused-vars
@@ -78,12 +101,6 @@ function clearPreview() {
     }
 }
 
-function simpleResize(imageData) {}
-
-function bicubicResize(imageData) {
-
-}
-
 // cubic interpolation based on the formulas on this page: http://www.paulinternet.nl/?page=bicubic
 function cubicInterpolation(p, x) {
     if (Array.isArray(p) && p.length === 4) {
@@ -95,7 +112,7 @@ function cubicInterpolation(p, x) {
         return a * x ^ 3 + b * x ^ 2 + c * x + d;
     }
     else {
-        throw "p is not an array";
+        throw 'p is not an array';
     }
 }
 

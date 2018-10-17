@@ -47,40 +47,41 @@
     </div>
     <script type="text/javascript" src="js/imageset.js"></script>
     <script type="text/javascript">
+        /* eslint-disable indent */
         var canvas_data;
         var gadget = gadget || false;
         var test;
         $(document).ready(function () {
 
-            $("#images").change(function (e) {
-                let files = this.files;
-                for (let i = 0; i < files.length; i++) {
-                    let file = files[i];
-                    let newSizes = [
+            $('#images').change(function (e) {
+                var files = this.files;
+                for (var i = 0; i < files.length; i++) {
+                    var file = files[i];
+                    var newSizes = [
                         { width: 300, height: 200 },
                         { width: 500, height: 400 },
                         { width: 800, height: 600 }
                     ];
-                    let img = document.createElement('img');
+                    var img = document.createElement('img');
                     img.src = window.URL.createObjectURL(file);
-                    test = img;
-                    console.log(test.complete);
+                    // var test = new ImageSet(img);
                     img.onload = function () {
                         console.log([newSizes, img, this]);
+                        test = new ImageSet(img);
                         console.log(test.complete);
-                        let output = resize(this, 'image/jpeg', newSizes);
+                        var output = resize(this, 'image/jpeg', newSizes);
                         console.log(output);
                         preview(output);
 
                         if (gadget) {
-                            let params = {
+                            var params = {
                                 site: gadget.site,
                                 overwrite: true,
                                 authorization_token: gadget.token
                             }
-                            let url = gadget.apihost + '/files/image_save';
+                            var url = gadget.apihost + '/files/image_save';
 
-                            for (let i = 0; i < output.length; i++) {
+                            for (var i = 0; i < output.length; i++) {
                                 params.data = output[i].split(',')[1];
                                 params.path = '/zz-test/images/image' + i + '.jpg';
 
