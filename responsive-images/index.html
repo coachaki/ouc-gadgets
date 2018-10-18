@@ -18,6 +18,7 @@
 </head>
 
 <body>
+    <!-- TODO: add full-screen overlay drag & drop function somewhere eventually (2018/10/18) -->
     <div class="flex-container sidebar">
         <aside class="sidebar">
             <section>
@@ -36,7 +37,6 @@
         </aside>
         <main>
             <form id="input-form">
-                <!-- full-screen overlay drag & drop function here -->
                 <input name="images" id="images" type="file" multiple />
             </form>
             <div id="main"></div>
@@ -48,12 +48,11 @@
     <script type="text/javascript" src="js/imageset.js"></script>
     <script type="text/javascript">
         /* eslint-disable indent */
-        var canvas_data;
-        var newSizes = [{ scale: 1 }, { scale: .8 }, { scale: .5 }, { scale: .3 }];
+        /* eslint-env jquery */
+        /* global ImageSet */
         var gadget = gadget || false;
         var test;
-        var test2;
-        $(document).ready(function () {
+        $(document).ready(function () { // eslint-disable-line no-undef
 
             $('#images').change(function (e) {
                 var files = this.files;
