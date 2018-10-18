@@ -1,54 +1,36 @@
 'use strict';
 
 // eslint-disable-next-line no-unused-vars
-function ImageSet(source, widths) {
-    if (!(source instanceof HTMLImageElement)) {
-        throw 'The source must be an HTMLImageElement.';
-    }
-    else if(!source.complete) {
-        throw 'Please call the ImageSet constructor after the image has been loaded.';
-    }
+function ImageSet(source, options) {
 
-    var self = this;
+    /* private functions */
+    var randomString = function(length) {
+        if (typeof length !== 'number' || length < 1) {
+            length = 10;
+        }
+        var chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        var output = '';
 
-    this.output = {type: 'image/jpeg'};
-    this.source = {image: source, width: source.naturalWidth, height: source.naturalHeight};
-    this.widths = widths || [1920, 1280, 800, 600, 480];
-    this.widths.sort(function(a, b) { return b - a;}); // largest to smallest, so we can scale down efficiently
-
-    this.resize = function() {
-        simpleResize();
-    };
-
-    this.toHTML = function(element) {
-        if (!(element instanceof HTMLElement)) {
-            throw 'The argument must be an HTMLElement.';
+        for (var i = 0; i < length; i++) {
+            var pos = Math.floor(Math.random() * chars.length);
+            output += chars[pos];
         }
 
-        var original = new Image();
-        original.src = this.output.original;
-        element.append(original);
-
-        for(var i = 0; i < this.widths.length; i++) {
-            var key = this.widths[i];
-            if (this.output[key] === null) {
-                continue;
-            }
-            var image = new Image();
-            image.src = this.output[key];
-
-            element.append(image);
-        }
+        return output;
     };
-
+    
     // A resize algorithm that resizes images by steps.
     var simpleResize = function(maxScaleStep) {
         if (typeof(maxScaleStep) !== 'number') {
-            maxScaleStep = .01; // set default maximum scale step to 1% size reduction for maximum quality.
+            maxScaleStep = .667; // Set the default maximum scale step to 33.3% size reduction for maximum quality. When this number is higher, the image can be over-smoothed.
         }
-        console.log('simpleResize');
-        var canvas = document.createElement('canvas');
-        var context = canvas.getContext('2d');
+        console.info('simpleResize');
+        var canvas = document.createElement('canvas'), context = canvas.getContext('2d');
+        var tempCanvas = document.createElement('canvas'), tempContext = tempCanvas.getContext('2d');
+        context.msImageSmoothingEnabled  = true;
+        context.imageSmoothingEnabled = true;
+        tempContext.msImageSmoothingEnabled  = true;
+        tempContext.imageSmoothingEnabled = true;
 
         canvas.width = self.source.width;
         canvas.height = self.source.height;
@@ -56,26 +38,24 @@ function ImageSet(source, widths) {
 
         self.output.original = canvas.toDataURL(self.output.type);
 
-        var tempCanvas = document.createElement('canvas');
-        var tempContext = tempCanvas.getContext('2d');
         for (var i = 0; i < self.widths.length; i++) {
             tempCanvas.width = canvas.width;
             tempCanvas.height = canvas.height;
             tempContext.drawImage(canvas, 0, 0);
             var w0 = tempCanvas.width;
             var w1 = self.widths[i];
-            var scale = w1 / w0;
+            var scale = Math.round((w1 / w0) * 1000) / 1000;
             var h0 = tempCanvas.height;
-            var h1 = h0 * scale;
+            var h1 = Math.round(h0 * scale);
             if (w1 > w0) {
                 self.output[w1] = null;
                 continue; // only scale down
             }
 
             // non-outputting image scaling for increasing output image quality
-            while (scale >= maxScaleStep) {
-                var w1Temp = w0 * maxScaleStep;
-                var h1Temp = h0 * maxScaleStep;
+            while (scale <= maxScaleStep) {
+                var w1Temp = Math.round(w0 * maxScaleStep);
+                var h1Temp = Math.round(h0 * maxScaleStep);
 
                 canvas.width = w1Temp;
                 canvas.height = h1Temp;
@@ -83,11 +63,11 @@ function ImageSet(source, widths) {
 
                 w0 = w1Temp; // update the new starting width, height, and image
                 h0 = h1Temp;
-                tempCanvas.width = w0;
-                tempCanvas.height = h0;
-                tempCanvas.drawImage(canvas, 0, 0);
+                tempCanvas.width = canvas.width;
+                tempCanvas.height = canvas.height;
+                tempContext.drawImage(canvas, 0, 0);
 
-                scale = w1 / w0; // check for new scale value based on final desired output width and new starting width
+                scale = Math.round((w1 / w0) * 1000) / 1000; // check for new scale value based on final desired output width and new starting width
             }
 
             canvas.width = w1;
@@ -100,6 +80,80 @@ function ImageSet(source, widths) {
 
     // eslint-disable-next-line no-unused-vars
     var bicubicResize = function() { console.log('bicubicResize'); };
+
+    if (!(source instanceof HTMLImageElement)) {
+        throw 'The source must be an HTMLImageElement.';
+    }
+    else if(!source.complete) {
+        throw 'Please call the ImageSet constructor after the image has been loaded.';
+    }
+
+    var defaultOptions = {
+        name: randomString(12),
+        widths: [1920, 1280, 800, 600, 480]
+    };
+
+    if (options == null || typeof options == 'object') {
+        options = defaultOptions;
+    }
+
+    var self = this;
+
+    this.output = {
+        type: 'image/jpeg',
+        name: options.name || defaultOptions.name
+    };
+    this.source = {
+        image: source,
+        width: source.naturalWidth,
+        height: source.naturalHeight
+    };
+    this.widths = options.widths || defaultOptions.widths;
+    this.widths.sort(function(a, b) { return b - a;}); // largest to smallest, so we can scale down efficiently
+
+    this.resize = function() {
+        simpleResize();
+    };
+
+    this.toLinks = function(element) {
+        if (!(element instanceof HTMLElement)) {
+            throw 'The argument must be an HTMLElement.';
+        }
+
+        var ul = document.createElement('ul');
+        for(var i = 0; i < this.widths.length; i++) {
+            var key = this.widths[i];
+            if (this.output[key] === null) {
+                continue;
+            }
+            var li = document.createElement('li');
+            var link = document.createElement('a');
+            link.text = this.output.name + '-x' + key;
+            link.href = this.output[key];
+
+            li.appendChild(link);
+            ul.appendChild(li);
+        }
+        element.appendChild(ul);
+    };
+
+    this.toImages = function(element) {
+        if (!(element instanceof HTMLElement)) {
+            throw 'The argument must be an HTMLElement.';
+        }
+
+        for(var i = 0; i < this.widths.length; i++) {
+            var key = this.widths[i];
+            if (this.output[key] === null) {
+                continue;
+            }
+            var image = new Image();
+            image.src = this.output[key];
+
+            element.appendChild(image);
+        }
+    };
+
 }
 
 // eslint-disable-next-line no-unused-vars

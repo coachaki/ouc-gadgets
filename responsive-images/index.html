@@ -76,8 +76,10 @@
                         var output = resize(this, 'image/jpeg', newSizes);
                         console.log(output);
                         preview(output);
-                        test.toHTML(document.getElementById('main'));
-                        test2.toHTML(document.getElementById('main'));
+                        test.toLinks(document.getElementById('main'));
+                        test2.toLinks(document.getElementById('main'));
+                        test.toImages(document.getElementById('main'));
+                        test2.toImages(document.getElementById('main'));
 
                         if (gadget) {
                             var params = {
