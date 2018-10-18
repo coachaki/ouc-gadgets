@@ -36,17 +36,23 @@ function ImageSet(source, widths) {
         this.output.original = context.toDataURL;
 
         var tempImage = new Image();
+        tempImage.src = this.source.image.src;
+
         for (var i = 0; i < this.widths.length; i++) {
-            var width = this.widths[i];
-            if (width > this.source.width) {
-                this.output[width] = 'error';
+            var width_start = tempImage.naturalWidth;
+            var width_end = this.widths[i];
+            var scale = width_end / width_start;
+            var height_start = tempImage.naturalHeight;
+            var height_end = height_start * scale;
+            console.log(width_start, height_start, width_end, height_end);
+            if (width_end > width_start) {
+                this.output[width_end] = 'error';
                 continue; // only scale down
             }
+            canvas.width = width_end;
+            canvas.height = height_end;
 
-            var scale = width / canvas.width;
-            var context = canvas.getContext('2d');
-
-            context.drawImage(imageStart, 0, 0);
+            context.drawImage(tempImage, 0, 0, width_end, height_end);
             this.output[width] = canvas.toDataURL(this.output.type)
         }
     };
