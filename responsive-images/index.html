@@ -52,6 +52,7 @@
         var newSizes = [{ scale: 1 }, { scale: .8 }, { scale: .5 }, { scale: .3 }];
         var gadget = gadget || false;
         var test;
+        var test2;
         $(document).ready(function () {
 
             $('#images').change(function (e) {
@@ -69,10 +70,14 @@
                     img.onload = function () {
                         console.log([newSizes, img, this]);
                         test = new ImageSet(img);
-                        console.log(test.complete);
+                        test.resize();
+                        test2 = new ImageSet(img, [1920, 480]);
+                        test2.resize();
                         var output = resize(this, 'image/jpeg', newSizes);
                         console.log(output);
                         preview(output);
+                        test.toHTML(document.getElementById('main'));
+                        test2.toHTML(document.getElementById('main'));
 
                         if (gadget) {
                             var params = {

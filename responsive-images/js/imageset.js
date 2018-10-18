@@ -9,6 +9,8 @@ function ImageSet(source, widths) {
         throw 'Please call the ImageSet constructor after the image has been loaded.';
     }
 
+    var self = this;
+
     this.output = {type: 'image/jpeg'};
     this.source = {image: source, width: source.naturalWidth, height: source.naturalHeight};
     this.widths = widths || [1920, 1280, 800, 600, 480];
@@ -18,42 +20,81 @@ function ImageSet(source, widths) {
         simpleResize();
     };
 
-    this.preview = function(element) {
+    this.toHTML = function(element) {
         if (!(element instanceof HTMLElement)) {
             throw 'The argument must be an HTMLElement.';
         }
+
+        var original = new Image();
+        original.src = this.output.original;
+        element.append(original);
+
+        for(var i = 0; i < this.widths.length; i++) {
+            var key = this.widths[i];
+            if (this.output[key] === null) {
+                continue;
+            }
+            var image = new Image();
+            image.src = this.output[key];
+
+            element.append(image);
+        }
     };
 
-    var simpleResize = function() {
+    // A resize algorithm that resizes images by steps.
+    var simpleResize = function(maxScaleStep) {
+        if (typeof(maxScaleStep) !== 'number') {
+            maxScaleStep = .01; // set default maximum scale step to 1% size reduction for maximum quality.
+        }
         console.log('simpleResize');
         var canvas = document.createElement('canvas');
         var context = canvas.getContext('2d');
 
-        canvas.width = this.source.width;
-        canvas.height = this.source.height;
-        context.drawImage(source.image, 0, 0);
+        canvas.width = self.source.width;
+        canvas.height = self.source.height;
+        context.drawImage(self.source.image, 0, 0);
 
-        this.output.original = context.toDataURL;
+        self.output.original = canvas.toDataURL(self.output.type);
 
-        var tempImage = new Image();
-        tempImage.src = this.source.image.src;
-
-        for (var i = 0; i < this.widths.length; i++) {
-            var width_start = tempImage.naturalWidth;
-            var width_end = this.widths[i];
-            var scale = width_end / width_start;
-            var height_start = tempImage.naturalHeight;
-            var height_end = height_start * scale;
-            console.log(width_start, height_start, width_end, height_end);
-            if (width_end > width_start) {
-                this.output[width_end] = 'error';
+        var tempCanvas = document.createElement('canvas');
+        var tempContext = tempCanvas.getContext('2d');
+        for (var i = 0; i < self.widths.length; i++) {
+            tempCanvas.width = canvas.width;
+            tempCanvas.height = canvas.height;
+            tempContext.drawImage(canvas, 0, 0);
+            var w0 = tempCanvas.width;
+            var w1 = self.widths[i];
+            var scale = w1 / w0;
+            var h0 = tempCanvas.height;
+            var h1 = h0 * scale;
+            if (w1 > w0) {
+                self.output[w1] = null;
                 continue; // only scale down
             }
-            canvas.width = width_end;
-            canvas.height = height_end;
 
-            context.drawImage(tempImage, 0, 0, width_end, height_end);
-            this.output[width] = canvas.toDataURL(this.output.type)
+            // non-outputting image scaling for increasing output image quality
+            while (scale >= maxScaleStep) {
+                var w1Temp = w0 * maxScaleStep;
+                var h1Temp = h0 * maxScaleStep;
+
+                canvas.width = w1Temp;
+                canvas.height = h1Temp;
+                context.drawImage(tempCanvas, 0, 0, w1Temp, h1Temp);
+
+                w0 = w1Temp; // update the new starting width, height, and image
+                h0 = h1Temp;
+                tempCanvas.width = w0;
+                tempCanvas.height = h0;
+                tempCanvas.drawImage(canvas, 0, 0);
+
+                scale = w1 / w0; // check for new scale value based on final desired output width and new starting width
+            }
+
+            canvas.width = w1;
+            canvas.height = h1;
+
+            context.drawImage(tempCanvas, 0, 0, w1, h1);
+            self.output[w1] = canvas.toDataURL(self.output.type);
         }
     };
 
@@ -61,7 +102,8 @@ function ImageSet(source, widths) {
     var bicubicResize = function() { console.log('bicubicResize'); };
 }
 
-function resize(source, fivarype, newSizes) {
+// eslint-disable-next-line no-unused-vars
+function resize(source, filetype, newSizes) {
     var output = [];
     var canvas = document.createElement('canvas');
     var sourceWidth = source.naturalWidth;
@@ -80,11 +122,12 @@ function resize(source, fivarype, newSizes) {
         var context = canvas.getContext('2d');
 
         context.drawImage(source, 0, 0, sourceWidth * ratio, sourceHeight * ratio);
-        output.push(canvas.toDataURL(fivarype));
+        output.push(canvas.toDataURL(filetype));
     }
     return output;
 }
 
+// eslint-disable-next-line no-unused-vars
 function preview(output) {
     clearPreview();
     for (var i = 0; i < output.length; i++) {
@@ -92,7 +135,7 @@ function preview(output) {
         img.src = output[i];
         console.log(output[i].split(',')[1]);
         console.log(img);
-        $('main').append(img);
+        $('main').append(img); // eslint-disable-line no-undef
     }
 }
 
@@ -122,6 +165,7 @@ function cubicInterpolation(p, x) {
     }
 }
 
+// eslint-disable-next-line no-unused-vars
 function bicubicInterpolation(p, x, y) {
     var f_p = [];
     if (Array.isArray(p) && p.length === 4) {
