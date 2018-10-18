@@ -71,22 +71,15 @@
                         console.log([newSizes, img, this]);
                         test = new ImageSet(img);
                         test.resize();
-                        test2 = new ImageSet(img, [1920, 480]);
-                        test2.resize();
-                        var output = resize(this, 'image/jpeg', newSizes);
-                        console.log(output);
-                        preview(output);
                         test.toLinks(document.getElementById('main'));
-                        test2.toLinks(document.getElementById('main'));
                         test.toImages(document.getElementById('main'));
-                        test2.toImages(document.getElementById('main'));
 
                         if (gadget) {
                             var params = {
                                 site: gadget.site,
                                 overwrite: true,
                                 authorization_token: gadget.token
-                            }
+                            };
                             var url = gadget.apihost + '/files/image_save';
 
                             for (var i = 0; i < output.length; i++) {
@@ -104,7 +97,7 @@
 
                             }
                         }
-                    }
+                    };
                 }
             });
 

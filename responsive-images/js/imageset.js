@@ -3,6 +3,8 @@
 // eslint-disable-next-line no-unused-vars
 function ImageSet(source, options) {
 
+    var extensionMap = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp'}
+
     /* private functions */
     var randomString = function(length) {
         if (typeof length !== 'number' || length < 1) {
@@ -18,7 +20,7 @@ function ImageSet(source, options) {
 
         return output;
     };
-    
+
     // A resize algorithm that resizes images by steps.
     var simpleResize = function(maxScaleStep) {
         if (typeof(maxScaleStep) !== 'number') {
@@ -90,7 +92,7 @@ function ImageSet(source, options) {
 
     var defaultOptions = {
         name: randomString(12),
-        widths: [1920, 1280, 800, 600, 480]
+        widths: [1920, 1280, 800, 800, 600, 480]
     };
 
     if (options == null || typeof options == 'object') {
@@ -130,6 +132,7 @@ function ImageSet(source, options) {
             var link = document.createElement('a');
             link.text = this.output.name + '-x' + key;
             link.href = this.output[key];
+            link.target = '_blank';
 
             li.appendChild(link);
             ul.appendChild(li);
@@ -154,43 +157,6 @@ function ImageSet(source, options) {
         }
     };
 
-}
-
-// eslint-disable-next-line no-unused-vars
-function resize(source, filetype, newSizes) {
-    var output = [];
-    var canvas = document.createElement('canvas');
-    var sourceWidth = source.naturalWidth;
-    var sourceHeight = source.naturalHeight;
-
-    for (var i = 0; i < newSizes.length; i++) {
-        var newSize = newSizes[i];
-        if (newSize.width > sourceWidth || newSize.height > sourceHeight) {
-            continue; // only resize down. don't resize up
-        }
-        canvas.width = newSize.width;
-        canvas.height = newSize.height;
-
-        var ratio = Math.max(newSize.width / sourceWidth, newSize.height / sourceHeight);
-
-        var context = canvas.getContext('2d');
-
-        context.drawImage(source, 0, 0, sourceWidth * ratio, sourceHeight * ratio);
-        output.push(canvas.toDataURL(filetype));
-    }
-    return output;
-}
-
-// eslint-disable-next-line no-unused-vars
-function preview(output) {
-    clearPreview();
-    for (var i = 0; i < output.length; i++) {
-        var img = document.createElement('img');
-        img.src = output[i];
-        console.log(output[i].split(',')[1]);
-        console.log(img);
-        $('main').append(img); // eslint-disable-line no-undef
-    }
 }
 
 function clearPreview() {
