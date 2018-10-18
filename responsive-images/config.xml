@@ -38,9 +38,7 @@
     <entry key="default_image_dir" label="Default Image Directory" overwritable="true">/_resources/images/</entry>
     <entry key="default_image_sizes" label="Default Image Sizes" overwritable="true">
       [
-        {width: 1200, height: 900},
-        {width: 800, height: 600},
-        {width: 400, height: 300}
+        {scale: 1},{scale: .8},{scale: .5},{scale: .3}
       ]
     </entry>
 

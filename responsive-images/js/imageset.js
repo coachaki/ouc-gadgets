@@ -14,21 +14,28 @@ function resize(source, filetype, newSizes) {
     let sourceWidth = source.naturalWidth;
     let sourceHeight = source.naturalHeight;
 
-    let inProcessImage = {};
-
     for (let i = 0; i < newSizes.length; i++) {
         let newSize = newSizes[i];
-        if (newSize.width > sourceWidth || newSize.height > sourceHeight) {
-            continue; // only resize down. don't resize up
+        let scale = 1;
+        if (newSize.scale) {
+            if (newSize.scale > 1) {
+                continue; // only resize down.
+            }
+            scale = newSize.scale;
+            canvas.width = sourceWidth * scale;
+            canvas.height = sourceHeight * scale;
+        } else if (newSize.width && newSize.height) {
+            if (newSize.width > sourceWidth || newSize.height > sourceHeight) {
+                continue; // only resize down. don't resize up
+            }
+            scale = Math.max(newSize.width / sourceWidth, newSize.height / sourceHeight);
+            canvas.width = newSize.width;
+            canvas.height = newSize.height;
         }
-        canvas.width = newSize.width;
-        canvas.height = newSize.height;
-
-        let ratio = Math.max(newSize.width / sourceWidth, newSize.height / sourceHeight);
 
         let context = canvas.getContext('2d');
 
-        context.drawImage(source, 0, 0, sourceWidth * ratio, sourceHeight * ratio);
+        context.drawImage(source, 0, 0, sourceWidth * scale, sourceHeight * scale);
         output.push(canvas.toDataURL(filetype));
     }
     return output;
@@ -41,7 +48,7 @@ function preview(output) {
         img.src = output[i];
         console.log(output[i].split(',')[1]);
         console.log(img);
-        $('#main').append(img);
+        $('main').append(img);
     }
 }
 
@@ -56,11 +63,13 @@ function clearPreview() {
     }
 }
 
-function simpleResize(imageData) {}
+// function simpleResize(imageData) {
 
-function bicubicResize(imageData) {
+// }
 
-}
+// function bicubicResize(imageData) {
+
+// }
 
 // cubic interpolation based on the formulas on this page: http://www.paulinternet.nl/?page=bicubic
 function cubicInterpolation(p, x) {
@@ -73,7 +82,7 @@ function cubicInterpolation(p, x) {
         return a * x ^ 3 + b * x ^ 2 + c * x + d;
     }
     else {
-        throw "p is not an array";
+        throw 'p is not an array';
     }
 }
 
