@@ -3,7 +3,7 @@
 // eslint-disable-next-line no-unused-vars
 function ImageSet(source, options) {
 
-    var extensionMap = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp'}
+    var extensionMap = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp'};
 
     /* private functions */
     var randomString = function(length) {
@@ -95,7 +95,7 @@ function ImageSet(source, options) {
         widths: [1920, 1280, 800, 800, 600, 480]
     };
 
-    if (options == null || typeof options == 'object') {
+    if (options == null || typeof options != 'object') {
         options = defaultOptions;
     }
 
@@ -117,7 +117,7 @@ function ImageSet(source, options) {
         simpleResize();
     };
 
-    this.toLinks = function(element) {
+    this.printLinks = function(element) {
         if (!(element instanceof HTMLElement)) {
             throw 'The argument must be an HTMLElement.';
         }
@@ -130,7 +130,7 @@ function ImageSet(source, options) {
             }
             var li = document.createElement('li');
             var link = document.createElement('a');
-            link.text = this.output.name + '-x' + key;
+            link.text = this.output.name + '-x' + key + extensionMap[this.output.type];
             link.href = this.output[key];
             link.target = '_blank';
 
@@ -140,7 +140,7 @@ function ImageSet(source, options) {
         element.appendChild(ul);
     };
 
-    this.toImages = function(element) {
+    this.printImages = function(element) {
         if (!(element instanceof HTMLElement)) {
             throw 'The argument must be an HTMLElement.';
         }
@@ -152,9 +152,27 @@ function ImageSet(source, options) {
             }
             var image = new Image();
             image.src = this.output[key];
+            image.alt = this.output.name + '-x' + key + extensionMap[this.output.type];
 
             element.appendChild(image);
         }
+    };
+
+    this.getImages = function() {
+        var output = [];
+        for(var i = 0; i < this.widths.length; i++) {
+            var key = this.widths[i];
+            if (this.output[key] === null) {
+                continue;
+            }
+            var image = {};
+            image.name = this.output.name + '-x' + key + extensionMap[this.output.type];
+            image.data = this.output[key];
+
+            output.push(image);
+        }
+
+        return output;
     };
 
 }
