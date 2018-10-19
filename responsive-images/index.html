@@ -108,6 +108,9 @@
                     getImageDir: function() {
                         gadget.getConfig('image_dir');
                     },
+                    getImageSizes: function() {
+                        gadget.getConfig('image_sizes');
+                    },
                     uploadImage: function (path, data, overwrite) {
                         var url = gadget.apihost + '/files/image_save';
                         var params = {

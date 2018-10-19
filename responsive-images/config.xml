@@ -36,7 +36,7 @@
          apply to custom entries too. -->
     <entry key="version" label="Version" private="true">0.4.0</entry>
     <entry key="image_dir" label="Default Image Directory" overwritable="true">/_resources/images/</entry>
-    <entry key="default_image_sizes" label="Default Image Sizes" overwritable="true">
+    <entry key="image_sizes" label="Default Image Sizes" overwritable="true">
       [ { width: 1920 }, { width: 1280, suffix: '-desktop' }, { width: 800, suffix: '-tablet' }, { width: 800, suffix: '-tablet2' }, { width: 600, suffix: '-mobile' }, { width: 480, suffix: '-mobile2' } ]
     </entry>
 
