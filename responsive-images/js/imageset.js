@@ -134,6 +134,7 @@ function ImageSet(source, options) {
         }
 
         var ul = document.createElement('ul');
+        ul.class = 'image-list';
         for(var i = 0; i < this.sizes.length; i++) {
             var key = this.sizes[i].width;
             var suffix = this.sizes[i].suffix || '-x' + key;
