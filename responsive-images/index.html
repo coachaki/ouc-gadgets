@@ -85,7 +85,7 @@
                                 for (var i = 0; i < images.length; i++) {
                                     (function () {
                                         var image = images[i];
-                                        var fullpath = gadget.getConfig('image_dir') + image.name;
+                                        var fullpath = myGadget.getImageDir() + image.name;
                                         myGadget.uploadImage(fullpath, image.data);
                                     })();
                                 }
@@ -104,6 +104,9 @@
                     settings: {
                         site: gadget.site,
                         authorization_token: gadget.token
+                    },
+                    getImageDir: function() {
+                        gadget.getConfig('image_dir');
                     },
                     uploadImage: function (path, data, overwrite) {
                         var url = gadget.apihost + '/files/image_save';
