@@ -71,9 +71,9 @@ main {
         }
     }
 
-    input[type=file] {
+    input[type=file].filechooser {
         background: rgba(255,255,255,.667);
-        width: calc(100% - 1em);
+        width: calc(100% - 4em);
         padding: .5em;
         border: 1px dashed #ccc;
     }
