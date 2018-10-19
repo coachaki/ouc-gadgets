@@ -2,10 +2,6 @@
   box-sizing: border-box;
 }
 
-html {
-  overflow-x: hidden;
-}
-
 html, body {
   background: transparent;
   font-family: Arial, Helvetica, sans-serif;
@@ -63,6 +59,10 @@ main {
   height: 80%;
   margin: auto;
   margin-top: 6em;
+}
+
+#input-form {
+  overflow-x: hidden;
 }
 
 @media screen and (min-width: 768px) {
