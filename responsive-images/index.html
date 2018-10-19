@@ -109,7 +109,13 @@
                         return gadget.getConfig('image_dir');
                     },
                     getImageSizes: function() {
-                        return gadget.getConfig('image_sizes');
+                        try {
+                            return JSON.parse(gadget.getConfig('image_sizes'));
+                        } catch (error) {
+                            console.error(error); // TODO: add error handling for SyntaxError
+                            window.alert('Your image sizes are not configured properly. This gadget won\'t work properly.');
+                        }
+                        
                     },
                     uploadImage: function (path, data, overwrite) {
                         var url = gadget.apihost + '/files/image_save';

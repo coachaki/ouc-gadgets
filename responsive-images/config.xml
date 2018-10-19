@@ -39,8 +39,15 @@
     <entry key="image_sizes" label="Image Sizes" overwritable="false">
       [ { "width": 1920 }, { "width": 1280, "suffix": "-desktop" }, { "width": 800, "suffix": "-tablet" }, { "width": 800, "suffix": "-tablet2" }, { "width": 600, "suffix": "-mobile" }, { "width": 480, "suffix": "-mobile2" } ]
     </entry>
+    <entry key="overwrite" label="Overwrite Images" overwritable="true" type="checkbox">
+      {
+        "list": [
+          { "key" : "1", "selected" : "false" }
+        ]
+      };
+    </entry>
 
-</config>
+  </config>
 
 
 <!-- Flags
