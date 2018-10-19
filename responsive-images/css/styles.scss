@@ -7,6 +7,10 @@ $min-xl: 1200px;
   box-sizing: border-box;
 }
 
+html {
+    overflow-x: hidden;
+}
+
 html, body {
     background: transparent;
     font-family: Arial, Helvetica, sans-serif;
