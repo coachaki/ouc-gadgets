@@ -39,10 +39,11 @@
     <entry key="image_sizes" label="Image Sizes" overwritable="false">
       [ { "width": 1920 }, { "width": 1280, "suffix": "-desktop" }, { "width": 800, "suffix": "-tablet" }, { "width": 800, "suffix": "-tablet2" }, { "width": 600, "suffix": "-mobile" }, { "width": 480, "suffix": "-mobile2" } ]
     </entry>
-    <entry key="overwrite" label="Overwrite Images" overwritable="true" type="checkbox">
+    <entry key="overwrite" label="Overwrite Images" overwritable="true" type="radio">
       {
         "list": [
-          { "key" : "1", "selected" : "false" }
+          { "key" : "overwrite", "selected" : "false" }
+          { "key" : "no-overwrite", "selected" : "true" }
         ]
       };
     </entry>
