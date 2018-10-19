@@ -37,10 +37,11 @@
         </aside>
         <main>
             <form id="input-form">
-                <div class="row-1">
+                <div class="static">
                     <input tabindex="1" name="images" id="images" type="file" multiple class="filechooser" />
-                    <button class="expand"><span class="fas fa-plus fa-2x"></span><span class="sr-only">Expand</span></button>
+                    <!-- <button class="expand"><span class="fas fa-plus fa-2x"></span><span class="sr-only">Expand</span></button> -->
                 </div>
+                <!-- <div class="collapsable"></div> -->
             </form>
             <div id="main"></div>
             <!-- <div class="canvas-wrapper">
@@ -73,8 +74,8 @@
                         img.onload = function () {
                             var imageset = new ImageSet(this, options);
                             imageset.resize();
-                            imageset.toLinks(document.getElementById('main'));
-                            imageset.toImages(document.getElementById('main'));
+                            imageset.printLinks(document.getElementById('main'));
+                            imageset.printImages(document.getElementById('main'));
 
                             imagesets.push(imageset);
 
@@ -84,7 +85,7 @@
                                 for (var i = 0; i < images.length; i++) {
                                     (function () {
                                         var image = images[i];
-                                        var fullpath = '/zz-test/images/' + image.name;
+                                        var fullpath = gadget.getConfig('image_dir') + image.name;
                                         myGadget.uploadImage(fullpath, image.data);
                                     })();
                                 }
@@ -114,14 +115,14 @@
                             overwrite: overwrite || false
                         };
 
-                        $.ajax({
-                            method: 'post',
-                            url: url,
-                            data: params
-                        })
-                            .done(function (response) {
-                                console.log('done', response);
-                            });
+                        console.log({url: url, data: params});
+                        // $.ajax({
+                        //     method: 'post',
+                        //     url: url,
+                        //     data: params
+                        // }).done(function (response) {
+                        //     console.log('done', response);
+                        // });
                     },
 
                 };

@@ -7,7 +7,8 @@
     "lib": "lib"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "sass": "node-sass ./responsive-images/css/styles.scss ./responsive-images/css/styles.css"
   },
   "repository": {
     "type": "git",

@@ -40,12 +40,12 @@ function ImageSet(source, options) {
 
         self.output.original = canvas.toDataURL(self.output.type);
 
-        for (var i = 0; i < self.widths.length; i++) {
+        for (var i = 0; i < self.sizes.length; i++) {
             tempCanvas.width = canvas.width;
             tempCanvas.height = canvas.height;
             tempContext.drawImage(canvas, 0, 0);
             var w0 = tempCanvas.width;
-            var w1 = self.widths[i];
+            var w1 = self.sizes[i].width;
             var scale = Math.round((w1 / w0) * 1000) / 1000;
             var h0 = tempCanvas.height;
             var h1 = Math.round(h0 * scale);
@@ -92,7 +92,14 @@ function ImageSet(source, options) {
 
     var defaultOptions = {
         name: randomString(12),
-        widths: [1920, 1280, 800, 800, 600, 480]
+        sizes: [
+            { width: 1920 },
+            { width: 1280, suffix: '-desktop' },
+            { width: 800, suffix: '-tablet' },
+            { width: 800, suffix: '-tablet2' },
+            { width: 600, suffix: '-mobile' },
+            { width: 480, suffix: '-mobile2' }
+        ]
     };
 
     if (options == null || typeof options != 'object') {
@@ -110,11 +117,15 @@ function ImageSet(source, options) {
         width: source.naturalWidth,
         height: source.naturalHeight
     };
-    this.widths = options.widths || defaultOptions.widths;
-    this.widths.sort(function(a, b) { return b - a;}); // largest to smallest, so we can scale down efficiently
+    this.sizes = options.sizes || defaultOptions.sizes;
+    this.sizes.sort(function(a, b) { return b.width - a.width;}); // largest to smallest, so we can scale down efficiently
 
     this.resize = function() {
         simpleResize();
+    };
+
+    this.getFilename = function(suffix) {
+        return this.output.name + suffix + '.' + extensionMap[this.output.type];
     };
 
     this.printLinks = function(element) {
@@ -123,14 +134,15 @@ function ImageSet(source, options) {
         }
 
         var ul = document.createElement('ul');
-        for(var i = 0; i < this.widths.length; i++) {
-            var key = this.widths[i];
+        for(var i = 0; i < this.sizes.length; i++) {
+            var key = this.sizes[i].width;
+            var suffix = this.sizes[i].suffix || '-x' + key;
             if (this.output[key] === null) {
                 continue;
             }
             var li = document.createElement('li');
             var link = document.createElement('a');
-            link.text = this.output.name + '-x' + key + extensionMap[this.output.type];
+            link.text = this.getFilename(suffix);
             link.href = this.output[key];
             link.target = '_blank';
 
@@ -145,14 +157,15 @@ function ImageSet(source, options) {
             throw 'The argument must be an HTMLElement.';
         }
 
-        for(var i = 0; i < this.widths.length; i++) {
-            var key = this.widths[i];
+        for(var i = 0; i < this.sizes.length; i++) {
+            var key = this.sizes[i].width;
+            var suffix = this.sizes[i].suffix || '-x' + key;
             if (this.output[key] === null) {
                 continue;
             }
             var image = new Image();
             image.src = this.output[key];
-            image.alt = this.output.name + '-x' + key + extensionMap[this.output.type];
+            image.alt = this.getFilename(suffix);
 
             element.appendChild(image);
         }
@@ -160,13 +173,14 @@ function ImageSet(source, options) {
 
     this.getImages = function() {
         var output = [];
-        for(var i = 0; i < this.widths.length; i++) {
-            var key = this.widths[i];
+        for(var i = 0; i < this.sizes.length; i++) {
+            var key = this.sizes[i].width;
+            var suffix = this.sizes[i].suffix || '-x' + key;
             if (this.output[key] === null) {
                 continue;
             }
             var image = {};
-            image.name = this.output.name + '-x' + key + extensionMap[this.output.type];
+            image.name = this.getFilename(suffix);
             image.data = this.output[key];
 
             output.push(image);
