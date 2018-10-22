@@ -100,6 +100,7 @@ function ImageSet(source, options) {
     }
 
     var defaultOptions = {
+        elementId: 'main',
         name: randomString(12),
         sizes: [
             { width: 1920 },
@@ -118,6 +119,7 @@ function ImageSet(source, options) {
     var self = this;
 
     this.output = {
+        elementId: options.elementId || defaultOptions.elementId,
         type: 'image/jpeg',
         name: options.name || defaultOptions.name
     };
@@ -129,17 +131,59 @@ function ImageSet(source, options) {
     this.sizes = options.sizes || defaultOptions.sizes;
     this.sizes.sort(function(a, b) { return b.width - a.width;}); // largest to smallest, so we can scale down efficiently
 
-    this.resize = function() {
+    this.resize = function(element) {
+        // if (!(element instanceof HTMLElement)) {
+        //     element = document.getElementById(this.output.elementId);
+        // }
+
+        // if (element instanceof HTMLElement) {
+        //     var p = document.createElement('p');
+        //     p.textContent = 'Resizing images';
+        //     element.appendChild(p);
+        // }
+
         simpleResize();
+
+        // element.removeChild(p);
     };
 
     this.getFilename = function(suffix) {
         return this.output.name + suffix + '.' + extensionMap[this.output.type];
     };
 
+    // TODO: a function for printing size list checkbox for choosing which ones to upload.
+    // this.printSizeList = function(element) {
+    //     if (!(element instanceof HTMLElement)) {
+    //         element = document.getElementById(this.output.elementId);
+    //         if (!(element instanceof HTMLElement)) {
+    //             throw 'The argument must be an HTMLElement.';
+    //         }
+    //     }
+
+    //     var ul = document.createElement('ul');
+    //     ul.class = 'checkbox-list';
+    //     for(var i = 0; i < this.sizes.length; i++) {
+    //         var key = this.sizes[i].width;
+    //         var suffix = this.sizes[i].suffix || '-x' + key;
+    //         var filename = this.getFilename(suffix);
+    //         if (this.output[key] === null) {
+    //             continue;
+    //         }
+    //         var li = document.createElement('li');
+
+    //         // create a checkbox element here
+
+    //         ul.appendChild(li);
+    //     }
+    //     element.appendChild(ul);
+    // };
+
     this.printLinks = function(element) {
         if (!(element instanceof HTMLElement)) {
-            throw 'The argument must be an HTMLElement.';
+            element = document.getElementById(this.output.elementId);
+            if (!(element instanceof HTMLElement)) {
+                throw 'The argument must be an HTMLElement.';
+            }
         }
 
         var ul = document.createElement('ul');
@@ -164,7 +208,10 @@ function ImageSet(source, options) {
 
     this.printImages = function(element) {
         if (!(element instanceof HTMLElement)) {
-            throw 'The argument must be an HTMLElement.';
+            element = document.getElementById(this.output.elementId);
+            if (!(element instanceof HTMLElement)) {
+                throw 'The argument must be an HTMLElement.';
+            }
         }
 
         for(var i = 0; i < this.sizes.length; i++) {

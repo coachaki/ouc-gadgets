@@ -43,7 +43,7 @@
                 </div>
                 <!-- <div class="collapsable"></div> -->
             </form>
-            <div id="main"></div>
+            <div id="app-ui"></div>
             <!-- <div class="canvas-wrapper">
                 <canvas id="preview-frame"></canvas>
             </div> -->
@@ -68,15 +68,14 @@
                         var file = files[i];
                         console.log(file);
                         var options = {
-                            name: file.name.replace(/\.[^/.]+$/, '')
+                            name: file.name.replace(/\.[^/.]+$/, ''),
+                            elementId: 'app-ui'
                         };
                         var img = document.createElement('img');
                         img.src = window.URL.createObjectURL(file);
                         img.onload = function () {
                             var imageset = new ImageSet(this, options);
                             imageset.resize();
-                            imageset.printLinks(document.getElementById('main'));
-                            imageset.printImages(document.getElementById('main'));
 
                             imagesets.push(imageset);
 
@@ -90,6 +89,9 @@
                                         myGadget.uploadImage(fullpath, image.data);
                                     })();
                                 }
+                            } else {
+                                imageset.printLinks();
+                                imageset.printImages();
                             }
                         };
                     })();
@@ -120,7 +122,7 @@
                         getOverwrite: function() {
                             return gadget.getConfig('overwrite');
                         },
-                        uploadImage: function (path, data, overwrite) {
+                        uploadImage: function (path, data, overwrite, output) {
                             var url = gadget.apihost + '/files/image_save';
                             var params = {
                                 site: gadget.site,
@@ -131,13 +133,13 @@
                             };
 
                             console.log({url: url, data: params});
-                            // $.ajax({
-                            //     method: 'post',
-                            //     url: url,
-                            //     data: params
-                            // }).done(function (response) {
-                            //     console.log('done', response);
-                            // });
+                            $.ajax({
+                                method: 'post',
+                                url: url,
+                                data: params
+                            }).done(function (response) {
+                                console.log('done', response);
+                            });
                         }
                     };
 
