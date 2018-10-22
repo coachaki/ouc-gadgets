@@ -5,6 +5,15 @@ function ImageSet(source, options) {
 
     var extensionMap = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp'};
 
+    // var clearImages = function(element) {
+    //     for (var i = element.childNodes.length - 1; i >= 0; i--) {
+    //         var node = element.childNodes[i];
+    //         if (node.nodeName == 'IMG') {
+    //             node.remove();
+    //         }
+    //     }
+    // };
+
     /* private functions */
     var randomString = function(length) {
         if (typeof length !== 'number' || length < 1) {
@@ -189,18 +198,6 @@ function ImageSet(source, options) {
 
         return output;
     };
-
-}
-
-function clearPreview() {
-    var images = document.getElementsByTagName('img');
-    console.log(images);
-    for (var i = images.length - 1; i >= 0; i--) {
-        var img = images[i];
-        if (img.parentNode) {
-            img.parentNode.removeChild(img);
-        }
-    }
 }
 
 // cubic interpolation based on the formulas on this page: http://www.paulinternet.nl/?page=bicubic
