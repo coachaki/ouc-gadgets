@@ -96,50 +96,54 @@
             });
 
             if (gadget) {
+                document.getElementsByTagName('html')[0].classList.add('gadget');
                 gadget.ready().then(gadget.fetch).then(function () {
                     $('#main').css({ 'font-size': gadget.getConfig('font_size') });
                     console.log(gadget);
-                });
-                var myGadget = {
-                    settings: {
-                        site: gadget.site,
-                        authorization_token: gadget.token
-                    },
-                    getImageDir: function() {
-                        return gadget.getConfig('image_dir');
-                    },
-                    getImageSizes: function() {
-                        try {
-                            return JSON.parse(gadget.getConfig('image_sizes'));
-                        } catch (error) {
-                            console.error(error); // TODO: add error handling for SyntaxError
-                            window.alert('Your image sizes are not configured properly. This gadget won\'t work properly.');
-                        }
-                        
-                    },
-                    uploadImage: function (path, data, overwrite) {
-                        var url = gadget.apihost + '/files/image_save';
-                        var params = {
+                    var myGadget = {
+                        settings: {
                             site: gadget.site,
-                            authorization_token: gadget.token,
-                            path: path,
-                            data: data,
-                            overwrite: overwrite || false
-                        };
+                            authorization_token: gadget.token
+                        },
+                        getImageDir: function() {
+                            return gadget.getConfig('image_dir');
+                        },
+                        getImageSizes: function() {
+                            try {
+                                return JSON.parse(gadget.getConfig('image_sizes'));
+                            } catch (error) {
+                                console.error(error); // TODO: add error handling for SyntaxError
+                                window.alert('Your image sizes are not configured properly. This gadget won\'t work properly.');
+                            }
+                            
+                        },
+                        getOverwrite: function() {
+                            return gadget.getConfig('overwrite');
+                        },
+                        uploadImage: function (path, data, overwrite) {
+                            var url = gadget.apihost + '/files/image_save';
+                            var params = {
+                                site: gadget.site,
+                                authorization_token: gadget.token,
+                                path: path,
+                                data: data,
+                                overwrite: overwrite || false
+                            };
 
-                        console.log({url: url, data: params});
-                        // $.ajax({
-                        //     method: 'post',
-                        //     url: url,
-                        //     data: params
-                        // }).done(function (response) {
-                        //     console.log('done', response);
-                        // });
-                    },
+                            console.log({url: url, data: params});
+                            // $.ajax({
+                            //     method: 'post',
+                            //     url: url,
+                            //     data: params
+                            // }).done(function (response) {
+                            //     console.log('done', response);
+                            // });
+                        },
 
-                };
+                    };
 
-                window.myGadget = myGadget;
+                    window.myGadget = myGadget;
+                });
 
                 $(gadget).on({
                     'expanded': function (evt) {
