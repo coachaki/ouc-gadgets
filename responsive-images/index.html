@@ -86,7 +86,7 @@
                                     (function () {
                                         var image = images[i];
                                         var fullpath = myGadget.getImageDir() + image.name;
-                                        myGadget.uploadImage(fullpath, image.data);
+                                        myGadget.uploadImage(fullpath, image.binary);
                                     })();
                                 }
                             } else {
@@ -129,7 +129,7 @@
                                 authorization_token: gadget.token,
                                 path: path,
                                 data: data,
-                                overwrite: overwrite || false
+                                overwrite: overwrite || this.getOverwrite()
                             };
 
                             console.log({url: url, data: params});

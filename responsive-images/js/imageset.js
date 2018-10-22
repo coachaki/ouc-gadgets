@@ -85,7 +85,8 @@ function ImageSet(source, options) {
             canvas.height = h1;
 
             context.drawImage(tempCanvas, 0, 0, w1, h1);
-            self.output[w1] = canvas.toDataURL(self.output.type);
+            self.output[w1].data = canvas.toDataURL(self.output.type);
+            self.output[w1].binary = self.output[w1].data.split(',')[1];
         }
     };
 
@@ -238,7 +239,8 @@ function ImageSet(source, options) {
             }
             var image = {};
             image.name = this.getFilename(suffix);
-            image.data = this.output[key];
+            image.data = this.output[key].data;
+            image.binary = this.output[key].binary;
 
             output.push(image);
         }
