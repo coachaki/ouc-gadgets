@@ -86,7 +86,9 @@
                                     (function () {
                                         var image = images[i];
                                         var fullpath = myGadget.getImageDir() + image.name;
-                                        myGadget.uploadImage(fullpath, image.binary);
+                                        myGadget.uploadImage(fullpath, image.binary).done(function (response) {
+                                            console.log('done', response);
+                                        });
                                     })();
                                 }
                             } else {
@@ -133,12 +135,10 @@
                             };
 
                             console.log({url: url, data: params});
-                            $.ajax({
+                            return $.ajax({
                                 method: 'post',
                                 url: url,
                                 data: params
-                            }).done(function (response) {
-                                console.log('done', response);
                             });
                         }
                     };
