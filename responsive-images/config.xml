@@ -36,7 +36,10 @@
          apply to custom entries too. -->
     <entry key="version" label="Version" private="true">0.4.0</entry>
     <entry key="image_dir" label="Image Directory" overwritable="false">/_resources/images/</entry>
-    <entry key="overwrite" label="Overwrite Images" overwritable="true" type="radio">{"list":[{"key":"Yes","selected":false},{"key":"No","selected":true}]}</entry>
+    <entry key="image_sizes" label="Image Sizes" overwritable="false">
+      [ { "width": 1920 }, { "width": 1280, "suffix": "-desktop" }, { "width": 800, "suffix": "-tablet" }, { "width": 800, "suffix": "-tablet2" }, { "width": 600, "suffix": "-mobile" }, { "width": 480, "suffix": "-mobile2" } ]
+    </entry>
+    <entry key="overwrite_upload" label="Overwrite on Upload" overwritable="true" type="radio">{"list":[{"key":"Yes","selected":false},{"key":"No","selected":true}]}</entry>
 
   </config>
 
