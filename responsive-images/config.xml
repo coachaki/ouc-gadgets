@@ -40,6 +40,7 @@
       [ { "width": 1920 }, { "width": 1280, "suffix": "-desktop" }, { "width": 800, "suffix": "-tablet" }, { "width": 800, "suffix": "-tablet2" }, { "width": 600, "suffix": "-mobile" }, { "width": 480, "suffix": "-mobile2" } ]
     </entry>
     <entry key="overwrite_upload" label="Overwrite on Upload" overwritable="true" type="radio">{"list":[{"key":"Overwrite Images","selected":false},{"key":"Don't Overwrite Images","selected":true}]}</entry>
+    <entry key="markdown_style" type="radio" label="Markdown Style" overwritable="true">{"list":[{"key":"Nested Bullet List","selected":true},{"key":"Table","selected":false}]}</entry>
 
   </config>
 
