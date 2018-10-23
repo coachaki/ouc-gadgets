@@ -39,7 +39,7 @@
     <entry key="image_sizes" label="Image Sizes" overwritable="false">
       [ { "width": 1920 }, { "width": 1280, "suffix": "-desktop" }, { "width": 800, "suffix": "-tablet" }, { "width": 800, "suffix": "-tablet2" }, { "width": 600, "suffix": "-mobile" }, { "width": 480, "suffix": "-mobile2" } ]
     </entry>
-    <entry key="overwrite_upload" label="Overwrite on Upload" overwritable="true" type="radio">{"list":[{"key":"Yes","selected":false},{"key":"No","selected":true}]}</entry>
+    <entry key="overwrite_upload" label="Overwrite on Upload" overwritable="true" type="radio">{"list":[{"key":"Overwrite Images","selected":false},{"key":"Don't Overwrite Images","selected":true}]}</entry>
 
   </config>
 
