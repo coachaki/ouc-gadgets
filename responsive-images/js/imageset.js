@@ -119,6 +119,18 @@ function ImageSet(source, options) {
 
     var self = this;
 
+    /* output signature after resize:
+    output = {
+        "elementId": "string",
+        "type": "string",
+        "name": "string, original name w/o suffix",
+        "1920": (width is the key) {
+            "binary": "string, pure binary data",
+            "data": "string, data link"
+        }
+    }
+
+    */
     this.output = {
         elementId: options.elementId || defaultOptions.elementId,
         type: 'image/jpeg',
@@ -198,7 +210,7 @@ function ImageSet(source, options) {
             var li = document.createElement('li');
             var link = document.createElement('a');
             link.text = this.getFilename(suffix);
-            link.href = this.output[key];
+            link.href = this.output[key].data;
             link.target = '_blank';
 
             li.appendChild(link);
@@ -222,7 +234,7 @@ function ImageSet(source, options) {
                 continue;
             }
             var image = new Image();
-            image.src = this.output[key];
+            image.src = this.output[key].data;
             image.alt = this.getFilename(suffix);
 
             element.appendChild(image);

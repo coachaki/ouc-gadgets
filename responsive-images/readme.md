@@ -19,6 +19,7 @@ This gadget will generate multiple, different size images from 1 user input imag
 
 - Crop support
 - Simple interface for choosing crop-point per aspect ratio
+- Drag and Drop
 
 ### Version 3.0 Feature List
 
