@@ -43,7 +43,14 @@
                 </div>
                 <!-- <div class="collapsable"></div> -->
             </form>
-            <div id="app-ui"></div>
+            <div id="output"></div>
+            <form id="submit-form">
+                <label for="overwrite">
+                    <input name="overwrite" id="overwrite" type="checkbox" value="true">
+                    Overwrite Upload
+                </label>
+                <button type="submit">Upload</button>
+            </form>
             <!-- <div class="canvas-wrapper">
                 <canvas id="preview-frame"></canvas>
             </div> -->
@@ -69,13 +76,14 @@
                         console.log(file);
                         var options = {
                             name: file.name.replace(/\.[^/.]+$/, ''),
-                            elementId: 'app-ui'
+                            elementId: 'output'
                         };
                         var img = document.createElement('img');
                         img.src = window.URL.createObjectURL(file);
                         img.onload = function () {
                             var imageset = new ImageSet(this, options);
                             imageset.resize();
+                            imageset.printLinks();
 
                             imagesets.push(imageset);
 
@@ -92,7 +100,6 @@
                                     })();
                                 }
                             } else {
-                                imageset.printLinks();
                                 imageset.printImages();
                             }
                         };

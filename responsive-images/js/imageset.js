@@ -105,12 +105,11 @@ function ImageSet(source, options) {
         elementId: 'main',
         name: randomString(12),
         sizes: [
-            { width: 1920 },
-            { width: 1280, suffix: '-desktop' },
-            { width: 800, suffix: '-tablet' },
-            { width: 800, suffix: '-tablet2' },
-            { width: 600, suffix: '-mobile' },
-            { width: 480, suffix: '-mobile2' }
+            { width: 1920, suffix: '-xl' },
+            { width: 1280, suffix: '-lg' },
+            { width: 800, suffix: '-md' },
+            { width: 600, suffix: '-sm' },
+            { width: 480, suffix: '-xs' }
         ]
     };
 

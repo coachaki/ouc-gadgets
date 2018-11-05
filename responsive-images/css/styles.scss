@@ -92,6 +92,23 @@ main {
     }
 }
 
+#submit-form {
+    //  display: none;
+}
+
+#submit-form {
+    display: block;
+    position: absolute;
+    bottom: 0;
+    margin-bottom: .5em;
+    
+    input[type=checkbox] {
+        line-height: 1;
+        margin: 0;
+        padding: 0;
+    }
+}
+
 #preview-frame {
     width: 100%;
     height: 100%;
